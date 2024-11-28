@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego de la Ruleta</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-size: 40px;
+      color: #333;
+      margin-top: 50px;
+    }
+
+    .flecha {
+      position: absolute;
+      top: 160px;  /* Ubicada justo debajo del título y encima de la ruleta */
+      left: 50%;
+      margin-left: -15px;  /* Centrar la flecha */
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 20px solid #000;
+      z-index: 10;
+    }
+
+    .ruleta-container {
+      position: relative;
+      width: 450px;
+      height: 450px;
+      margin: 50px auto;
+      border-radius: 50%;  /* Crear la forma circular */
+      border: 10px solid #444;
+      background-color: #fff;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .ruleta {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transform-origin: center;
+      background: conic-gradient(
+        #FF5733 0deg 30deg, #1E90FF 30deg 60deg,  /* Rojo: ¡Perdiste!, Azul: ¡Ganas! */
+        #FF5733 60deg 90deg, #1E90FF 90deg 120deg, 
+        #FF5733 120deg 150deg, #1E90FF 150deg 180deg,
+        #FF5733 180deg 210deg, #1E90FF 210deg 240deg, 
+        #FF5733 240deg 270deg, #1E90FF 270deg 300deg, 
+        #FF5733 300deg 330deg, #1E90FF 330deg 360deg  /* Rojo = Perdiste, Azul = Ganas */
+      );
+      transition: transform 4s ease-out;
+    }
+
+    .boton-girar {
+      font-size: 20px;
+      padding: 20px 40px;
+      color: #fff;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 30px;
+      transition: background-color 0.3s;
+    }
+
+    .boton-girar:hover {
+      background-color: #0056b3;
+    }
+
+    .resultado {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+
+    /* Añadir los textos encima de los segmentos */
+    .segmento-texto {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);  /* Agregar sombra al texto */
+      color: white;
+      text-align: center;
+    }
+
+    /* Colocamos el texto sobre cada segmento */
+    .segmento-texto:nth-child(1) { transform: rotate(15deg) translate(0, -160px) rotate(-15deg); } /* ¡Perdiste! */
+    .segmento-texto:nth-child(2) { transform: rotate(75deg) translate(0, -160px) rotate(-75deg); } /* ¡Ganas! */
+    .segmento-texto:nth-child(3) { transform: rotate(135deg) translate(0, -160px) rotate(-135deg); } /* ¡Perdiste! */
+    .segmento-texto:nth-child(4) { transform: rotate(195deg) translate(0, -160px) rotate(-195deg); } /* ¡Ganas! */
+    .segmento-texto:nth-child(5) { transform: rotate(255deg) translate(0, -160px) rotate(-255deg); } /* ¡Perdiste! */
+    .segmento-texto:nth-child(6) { transform: rotate(315deg) translate(0, -160px) rotate(-315deg); } /* ¡Ganas! */
+    .segmento-texto:nth-child(7) { transform: rotate(45deg) translate(0, -160px) rotate(-45deg); }  /* ¡Perdiste! */
+    .segmento-texto:nth-child(8) { transform: rotate(105deg) translate(0, -160px) rotate(-105deg); } /* ¡Ganas! */
+    .segmento-texto:nth-child(9) { transform: rotate(165deg) translate(0, -160px) rotate(-165deg); } /* ¡Perdiste! */
+    .segmento-texto:nth-child(10) { transform: rotate(225deg) translate(0, -160px) rotate(-225deg); } /* ¡Ganas! */
+    .segmento-texto:nth-child(11) { transform: rotate(285deg) translate(0, -160px) rotate(-285deg); } /* ¡Perdiste! */
+    .segmento-texto:nth-child(12) { transform: rotate(345deg) translate(0, -160px) rotate(-345deg); } /* ¡Ganas! */
+  </style>
+</head>
+<body>
+
+  <h1>Juego de la Ruleta</h1>
+
+  <!-- Flecha posicionada justo debajo del título -->
+  <div class="flecha"></div>
+
+  <div class="ruleta-container">
+    <div class="ruleta" id="ruleta">
+      <!-- Segmentos alternados de la ruleta (rojo para perder y azul para ganar) -->
+      <!-- Cada uno con su texto correspondiente: ¡Perdiste! o ¡Ganas! -->
+      <div class="segmento-texto">¡Perdiste!</div>
+      <div class="segmento-texto">¡Ganas!</div>
+      <div class="segmento-texto">¡Perdiste!</div>
+      <div class="segmento-texto">¡Ganas!</div>
+      <div class="segmento-texto">¡Perdiste!</div>
+      <div class="segmento-texto">¡Ganas!</div>
+      <div class="segmento-texto">¡Perdiste!</div>
+      <div class="segmento-texto">¡Ganas!</div>
+      <div class="segmento-texto">¡Perdiste!</div>
+      <div class="segmento-texto">¡Ganas!</div>
+      <div class="segmento-texto">¡Perdiste!</div>
+      <div class="segmento-texto">¡Ganas!</div>
+    </div>
+  </div>
+
+  <button class="boton-girar" onclick="girarRuleta()">Girar Ruleta</button>
+
+  <div class="resultado" id="resultado">Esperando...</div>
+
+  <script>
+    function girarRuleta() {
+      // Generar un giro aleatorio (el número de giros entre 3 y 5 para hacer el giro más impredecible)
+      const maxGiros = 5; // 5 giros completos (más de un giro para mayor duración)
+      const giroAleatorio = Math.random() * maxGiros + 3; // 3 a 5 giros completos
+      
+      // Cálculo del ángulo total aleatorio
+      const anguloTotal = giroAleatorio * 360;
+
+      // Mostrar "Girando..." mientras gira la ruleta
+      const ruleta = document.getElementById('ruleta');
+      const resultadoElement = document.getElementById('resultado');
+      resultadoElement.textContent = 'Girando...';
+
+      // Animación del giro de la ruleta
+      ruleta.style.transform = `rotate(${anguloTotal}deg)`;
+
+      // Después de que termine el giro, mostrar el resultado
+      setTimeout(function() {
+        // Calcular el ángulo final de la ruleta (el ángulo en el que se detuvo)
+        const anguloFinal = anguloTotal % 360;
+
+        let resultadoFinal = '';
+        
+        // Verificar en qué segmento cae la flecha
+        if (anguloFinal >= 0 && anguloFinal < 30) {
+          resultadoFinal = '¡Perdiste!';
+        } else if (anguloFinal >= 30 && anguloFinal < 60) {
+          resultadoFinal = '¡Ganas!';
+        } else if (anguloFinal >= 60 && anguloFinal < 90) {
+          resultadoFinal = '¡Perdiste!';
+        } else if (anguloFinal >= 90 && anguloFinal < 120) {
+          resultadoFinal = '¡Ganas!';
+        } else if (anguloFinal >= 120 && anguloFinal < 150) {
+          resultadoFinal = '¡Perdiste!';
+        } else if (anguloFinal >= 150 && anguloFinal < 180) {
+          resultadoFinal = '¡Ganas!';
+        } else if (anguloFinal >= 180 && anguloFinal < 210) {
+          resultadoFinal = '¡Perdiste!';
+        } else if (anguloFinal >= 210 && anguloFinal < 240) {
+          resultadoFinal = '¡Ganas!';
+        } else if (anguloFinal >= 240 && anguloFinal < 270) {
+          resultadoFinal = '¡Perdiste!';
+        } else if (anguloFinal >= 270 && anguloFinal < 300) {
+          resultadoFinal = '¡Ganas!';
+        } else if (anguloFinal >= 300 && anguloFinal < 330) {
+          resultadoFinal = '¡Perdiste!';
+        } else if (anguloFinal >= 330 && anguloFinal < 360) {
+          resultadoFinal = '¡Ganas!';
+        }
+
+        // Mostrar el resultado final en la pantalla
+        resultadoElement.textContent = resultadoFinal;
+      }, 4000); // Esperamos 4 segundos para que termine el giro
+    }
+  </script>
+
+</body>
+</html>
